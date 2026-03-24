@@ -10,7 +10,7 @@ services:
     volumes:
       - ./backend:/app           # Enables live tracking
     command: >                   # Watch C++ files and recompiles instantly
-      sh -c "find . -name '*.cpp' -o -name '*.hpp' | entr -nr sh -c 'g++ backend.cpp -o backend -std=c++17 -lcryptopp -O0 && ./backend'"
+      sh -c "find . -name '*.cpp' -o -name '*.hpp' | entr -nr sh -c 'g++ backend.cpp -o backend.out -std=c++17 -lcryptopp -O0 && ./backend.out'"
   # sh -c "find . -name '*.cpp' -o -name '*.hpp' | entr -nr sh -c 'g++ backend.cpp -o backend -std=c++17 -pthread -lcryptopp -O0 && ./server'"
   # frontend:
   #   build:
