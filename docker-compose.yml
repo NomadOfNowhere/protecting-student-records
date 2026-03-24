@@ -1,0 +1,27 @@
+# Run with: docker-compose up --build
+services:
+  backend:
+    build:
+      context: ./backend         # Path to C++ API Dockerfile
+    container_name: crypto-project-backend
+    ports:
+      - "18080:18080"            # Port mapping (host:container)
+    restart: unless-stopped      # Auto-restart on failure
+    volumes:
+      - ./backend:/app           # Enables live tracking
+    command: >                   # Watch C++ files and recompiles instantly
+      sh -c "find . -name '*.cpp' -o -name '*.hpp' | entr -nr sh -c 'g++ backend.cpp -o backend -std=c++17 -lcryptopp -O0 && ./backend'"
+  # sh -c "find . -name '*.cpp' -o -name '*.hpp' | entr -nr sh -c 'g++ backend.cpp -o backend -std=c++17 -pthread -lcryptopp -O0 && ./server'"
+  # frontend:
+  #   build:
+  #     context: ./frontend        # Path to React Dockerfile
+  #   container_name: crypto-ui
+  #   ports:
+  #     - "5173:5173"              # Port mapping (host:container)
+  #   volumes:
+  #     - ./frontend/src:/app/src  # Enable Vite Hot Module Replacement
+  #   environment:
+  #     - VITE_API_URL=http://localhost:18080  # Inject C++ API URL into React
+  #   depends_on:
+  #     - backend                   # Forces Docker to start React 
+  #                                 # container after C++ API
